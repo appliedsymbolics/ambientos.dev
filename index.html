@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%232563eb%22/%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%227%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22/%3E%3C/svg%3E">
+<link rel="canonical" href="https://ambientos.dev/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ambientos.dev/">
+<meta property="og:title" content="Ambient OS">
+<meta property="og:description" content="Ambient OS runs inventory, orders and floor work for labs, factories and warehouses, with a provable history of every unit.">
+<meta name="twitter:card" content="summary">
+<title>Ambient OS</title>
+<meta name="description" content="Ambient OS runs inventory, orders and floor work for labs, factories and warehouses, with a provable history of every unit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<style>
+:root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+/* Layout: an ops console turned outward. A light canvas, one blue accent,
+   monospace for anything the floor would read off a scanner screen. */
+:root {
+  --canvas: #f6f7f9;
+  --surface: #ffffff;
+  --ink: #111827;
+  --ink-2: #4b5563;
+  --ink-3: #5c6473;
+  --line: #e2e5ea;
+  --accent: #2563eb;
+  --accent-soft: #eaf1fe;
+  --ok: #15803d;
+  --warn: #b45309;
+  --grid: rgb(37 99 235 / 0.06);
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0d1117; --surface: #161b22; --ink: #e6e9ee; --ink-2: #a9b1bd; --ink-3: #8c95a3;
+    --line: #262d38; --accent: #60a5fa; --accent-soft: #14233d; --ok: #4ade80; --warn: #fbbf24;
+    --grid: rgb(96 165 250 / 0.07); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --canvas: #0d1117; --surface: #161b22; --ink: #e6e9ee; --ink-2: #a9b1bd; --ink-3: #8c95a3;
+  --line: #262d38; --accent: #60a5fa; --accent-soft: #14233d; --ok: #4ade80; --warn: #fbbf24;
+  --grid: rgb(96 165 250 / 0.07); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--canvas); color: var(--ink); font: 400 17px/1.6 var(--sans); }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--mono); letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.1rem, 5.2vw, 3.6rem); line-height: 1.05; font-weight: 800; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); line-height: 1.15; font-weight: 700; }
+h3 { font-size: 1.05rem; line-height: 1.35; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+.lede { font-size: 1.15rem; color: var(--ink-2); max-width: 60ch; }
+.muted { color: var(--ink-2); }
+
+/* Header */
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--canvas) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--canvas); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 800 1.05rem/1 var(--mono); color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+.mark { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); position: relative; flex: none; }
+.mark::after { content: ""; position: absolute; inset: 6px; border: 2px solid var(--surface); border-radius: 50%; }
+nav.links { display: flex; gap: 22px; align-items: center; font: 500 0.88rem/1 var(--mono); }
+nav.links a { color: var(--ink-2); text-decoration: none; }
+nav.links a:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 600 0.92rem/1 var(--mono); padding: 13px 18px; border-radius: 8px; text-decoration: none; border: 1px solid transparent; cursor: pointer; }
+.btn.primary { background: var(--accent); color: #fff; }
+:root[data-theme="dark"] .btn.primary { color: #0d1117; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color: #0d1117; } }
+.btn.ghost { border-color: var(--line); color: var(--ink); background: var(--surface); }
+.btn.small { padding: 10px 14px; font-size: 0.84rem; }
+@media (max-width: 760px) { nav.links a:not(.btn) { display: none; } }
+
+/* Hero */
+.hero { background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 28px 28px; border-bottom: 1px solid var(--line); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-block: 72px 80px; }
+.hero-copy { display: grid; gap: 22px; min-width: 0; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.fit { font: 500 0.82rem/1.5 var(--mono); color: var(--ink-3); }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; gap: 40px; padding-block: 48px 56px; } }
+
+/* Unit ledger, the hero's instrument */
+.ledger { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 24px 60px -28px rgb(17 24 39 / 0.35); overflow: hidden; min-width: 0; }
+.ledger-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; padding: 16px 18px; border-bottom: 1px solid var(--line); font: 500 0.78rem/1.4 var(--mono); color: var(--ink-2); }
+.ledger-head strong { color: var(--ink); font-weight: 700; }
+.tag { font: 600 0.68rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 7px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); }
+.ledger ol { list-style: none; margin: 0; padding: 6px 0; }
+.ledger li { display: grid; grid-template-columns: 3.4rem 6.6rem minmax(0, 1fr); gap: 12px; padding: 9px 18px; font: 400 0.8rem/1.45 var(--mono); align-items: baseline; }
+.ledger li + li { border-top: 1px dashed var(--line); }
+.ledger time { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.ledger .ev { font-weight: 700; color: var(--ink); }
+.ledger .ev.ok { color: var(--ok); }
+.ledger .detail { color: var(--ink-2); overflow-wrap: anywhere; }
+.ledger-foot { padding: 12px 18px; border-top: 1px solid var(--line); font: 500 0.74rem/1.4 var(--mono); color: var(--ink-3); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.ledger li { animation: rise 0.5s both; }
+@keyframes rise { from { transform: translateY(6px); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ledger li { animation: none; } }
+@media (max-width: 480px) { .ledger li { grid-template-columns: 3rem minmax(0, 1fr); } .ledger .detail { grid-column: 2; } }
+
+/* Sections */
+section { padding-block: 88px; }
+section + section { border-top: 1px solid var(--line); }
+.section-head { display: grid; gap: 14px; margin-bottom: 44px; max-width: 760px; }
+
+/* Floor flow: a real sequence, so it is numbered */
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; counter-reset: step; }
+.flow li { background: var(--surface); padding: 22px 20px 24px; display: grid; gap: 8px; align-content: start; counter-increment: step; min-width: 0; }
+.flow li::before { content: counter(step, decimal-leading-zero); font: 700 0.78rem/1 var(--mono); color: var(--accent); }
+.flow p { font-size: 0.93rem; color: var(--ink-2); }
+@media (max-width: 900px) { .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .flow { grid-template-columns: 1fr; } }
+
+/* Feature bands */
+.band { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; }
+.band + .band { margin-top: 72px; padding-top: 72px; border-top: 1px dashed var(--line); }
+.band-copy { display: grid; gap: 16px; min-width: 0; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; min-width: 0; }
+.checks li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; align-items: start; }
+.checks li::before { content: ""; width: 14px; height: 14px; margin-top: 6px; border: 2px solid var(--accent); border-radius: 3px; background: linear-gradient(var(--accent), var(--accent)) center / 6px 6px no-repeat; }
+.checks b { font-weight: 600; }
+@media (max-width: 860px) { .band { grid-template-columns: 1fr; gap: 28px; } }
+
+/* Carrier decision panel */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; min-width: 0; }
+.panel-title { padding: 14px 18px; border-bottom: 1px solid var(--line); font: 600 0.8rem/1.4 var(--mono); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font: 400 0.8rem/1.4 var(--mono); font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 18px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-weight: 600; color: var(--ink-3); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+td.num, th.num { text-align: right; }
+tr.chosen td { background: var(--accent-soft); color: var(--ink); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+.why { color: var(--warn); }
+
+/* Spec strip */
+.specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 40px; }
+.spec { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.spec p { color: var(--ink-2); font-size: 0.95rem; }
+@media (max-width: 860px) { .specs { grid-template-columns: 1fr; } }
+
+/* Access */
+.access { background: var(--surface); }
+.access .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: 48px; align-items: center; }
+.contact { border: 1px solid var(--line); border-radius: 12px; padding: 24px; display: grid; gap: 14px; background: var(--canvas); min-width: 0; }
+.addr { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.addr code { font: 700 1.05rem/1.3 var(--mono); color: var(--ink); user-select: all; overflow-wrap: anywhere; }
+.copied { font: 500 0.78rem/1 var(--mono); color: var(--ok); }
+@media (max-width: 860px) { .access .wrap { grid-template-columns: 1fr; } }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px; font: 400 0.8rem/1.5 var(--mono); color: var(--ink-3); }
+footer a { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>ambient os</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#where">Where it runs</a>
+      <a href="#floor">The floor</a>
+            <a href="#shipping">Shipping</a>
+      <a href="#proof">Accuracy</a>
+      <a class="btn primary small" href="#access">Request early access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">Inventory · orders · floor work</span>
+        <h1>Every unit, every move, one system.</h1>
+        <p class="lede">Ambient OS manages your orders and directs the work in the building, whether that is a lab stockroom, a factory floor or a warehouse. From the receiving dock to the carrier label, it records every unit's history as it happens, so your stock count is something you can prove.</p>
+        <div class="cta-row">
+          <a class="btn primary" href="#access">Request early access</a>
+          <a class="btn ghost" href="#floor">See how it works</a>
+        </div>
+        <p class="fit">For labs, factories, warehouses and 3PLs shipping 50–500 orders a day.</p>
+      </div>
+
+      <figure class="ledger" aria-label="Example unit history in Ambient">
+        <div class="ledger-head">
+          <span><strong>UNIT U-7KQ2M9</strong> · SKU TEE-BLK-M · lot L-2610</span>
+          <span class="tag">Example</span>
+        </div>
+        <ol>
+          <li><time>09:12</time><span class="ev">received</span><span class="detail">PO-1042 line 3 · expiry 2027-04-30</span></li>
+          <li style="animation-delay:.05s"><time>09:20</time><span class="ev">put away</span><span class="detail">bin A-04-02 (overstock)</span></li>
+          <li style="animation-delay:.1s"><time>11:47</time><span class="ev">replenished</span><span class="detail">A-04-02 → pick face P-12-01</span></li>
+          <li style="animation-delay:.15s"><time>13:05</time><span class="ev">reserved</span><span class="detail">order 58213 · FIFO by receipt</span></li>
+          <li style="animation-delay:.2s"><time>13:41</time><span class="ev">picked</span><span class="detail">cart C-07 · bin, item, qty scanned</span></li>
+          <li style="animation-delay:.25s"><time>13:52</time><span class="ev ok">qa passed</span><span class="detail">1.42 lb · 12 × 9 × 2 in</span></li>
+          <li style="animation-delay:.3s"><time>13:55</time><span class="ev">labeled</span><span class="detail">FedEx 2Day · $11.92 · best of 4 quotes</span></li>
+          <li style="animation-delay:.35s"><time>14:30</time><span class="ev ok">shipped</span><span class="detail">tracking 7949 5353 5000</span></li>
+        </ol>
+        <div class="ledger-foot"><span>8 events · 0 gaps</span><span>on hand = received − shipped ✓</span></div>
+      </figure>
+    </div>
+  </div>
+
+  <section id="where">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Where it runs</span>
+        <h2>One system for every building that holds stock and ships it.</h2>
+        <p class="lede">The rules of good inventory are the same in a lab, a plant and a warehouse: know what came in, where it is, what it was used for and where it went. Ambient applies them the same way in each.</p>
+      </div>
+      <div class="specs">
+        <div class="spec"><h3>Labs</h3><p>Reagents and consumables received by lot with their expiry dates, used first in, first out, and serial-tracked items with their own IDs. Every unit's history is on record for an audit.</p></div>
+        <div class="spec"><h3>Factories</h3><p>Materials received against purchase orders with over, short and damaged outcomes. Finished goods are checked by weight and dimensions before they ship, and traced by lot or serial after.</p></div>
+        <div class="spec"><h3>Warehouses &amp; 3PLs</h3><p>Many clients in one building, multi-order carts and rapid pick, and labels bought from the carrier that fits each box.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="floor">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">The floor</span>
+        <h2>Ambient tells each person the next task, and checks the scan.</h2>
+        <p class="lede">Operators work from phones, tablets or a desk. Each step asks for a scan of the bin, the item and the quantity, so mistakes stop at the shelf instead of at the customer.</p>
+      </div>
+      <ol class="flow">
+        <li><h3>Receive</h3><p>Against a purchase order, with over, short and damaged outcomes. Lots, expiry dates and serial numbers are captured where the item needs them.</p></li>
+        <li><h3>Put away</h3><p>Into the bin you choose, recorded by scan. Overstock and pick faces are tracked separately.</p></li>
+        <li><h3>Replenish</h3><p>Each pick face has a minimum and maximum. When it runs low, Ambient creates a move from overstock.</p></li>
+        <li><h3>Allocate</h3><p>Orders reserve stock first in, first out by receipt date, and a backorder retries when stock arrives.</p></li>
+        <li><h3>Pick</h3><p>Several orders at once on a cart, or one order straight into its shipping box with rapid pick.</p></li>
+        <li><h3>QA</h3><p>A count or scan, plus weight and dimensions against what the order should weigh. A failure goes to a supervisor.</p></li>
+        <li><h3>Pack &amp; label</h3><p>Ambient cubes the order, splits it into shipments if needed, and buys the label from the best carrier.</p></li>
+        <li><h3>Ship &amp; return</h3><p>Tracking appears on the order. Returns come back into quarantine, then are restocked or written off.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="clients">
+    <div class="wrap">
+      <div class="band">
+        <div class="band-copy">
+          <span class="eyebrow">For 3PLs</span>
+          <h2>Many clients in one building, each kept separate.</h2>
+          <p class="muted">Every item, order and return belongs to a client. Two clients can use the same SKU without colliding, and a scan only matches items of the client whose work is in hand.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>Order intake per client.</b> Each client gets its own API key to send orders, or you import them from CSV.</span></li>
+          <li><span><b>Clients hear about their orders.</b> Signed webhooks report status changes, tracking updates and alerts to each client's systems.</span></li>
+          <li><span><b>Rules that follow the client.</b> Signature requirements by product, client and state law, and a packing allowance set per client.</span></li>
+          <li><span><b>Returns with a paper trail.</b> Return authorizations come in through receiving, and every unit lands in quarantine before it can be sold again.</span></li>
+        </ul>
+      </div>
+
+      <div class="band" id="shipping">
+        <div class="band-copy">
+          <span class="eyebrow">Shipping</span>
+          <h2>The label is bought from the carrier that makes sense for this box.</h2>
+          <p class="muted">After packing, Ambient asks your carrier accounts for quotes. It weighs price, the service level the order needs, each carrier's on-time record and the cost of a signature, then buys the label and prints it. If the carrier connection is down, the packer ships by hand and nothing waits.</p>
+          <ul class="checks">
+            <li><span><b>Real carriers, your accounts.</b> UPS and FedEx labels on your own negotiated rates. Automatic choice compares FedEx services today, and UPS joins it next.</span></li>
+            <li><span><b>Carrier performance you can see.</b> On-time rate, days late, and settled against quoted cost for each carrier and service.</span></li>
+            <li><span><b>Invoices reconciled.</b> Upload the carrier's invoice and see what each label really cost.</span></li>
+          </ul>
+        </div>
+        <figure class="panel" aria-label="Example carrier decision for one order">
+          <div class="panel-title"><span>Order 58213 · 1 box · 1.42 lb · needs 2-day</span><span class="tag">Example</span></div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th>Carrier · service</th><th class="num">Quote</th><th class="num">On time</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr class="chosen"><td>FedEx · 2Day</td><td class="num">$11.92</td><td class="num">97%</td><td>chosen</td></tr>
+                <tr><td>FedEx · Standard Overnight</td><td class="num">$26.75</td><td class="num">97%</td><td>higher cost</td></tr>
+                <tr><td>FedEx · Express Saver</td><td class="num">$9.85</td><td class="num">96%</td><td class="why">misses 2-day</td></tr>
+                <tr><td>FedEx · Ground</td><td class="num">$8.10</td><td class="num">95%</td><td class="why">misses 2-day</td></tr>
+                <tr><td>FedEx · Priority Overnight</td><td class="num">$31.06</td><td class="num">98%</td><td>higher cost</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+      </div>
+
+      <div class="band" id="proof">
+        <div class="band-copy">
+          <span class="eyebrow">Accuracy</span>
+          <h2>Stock you can prove, not just count.</h2>
+          <p class="muted">Every movement is written as an event with who, when and where. Ambient checks its own books continuously and raises an alert the moment the numbers disagree.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>Unit-level history.</b> Serial-tracked units get their own ID, so you can answer where a specific unit went.</span></li>
+          <li><span><b>Self-checking inventory.</b> Scheduled reconciliation compares on-hand stock with the event history and flags any drift.</span></li>
+          <li><span><b>An exceptions queue, not a mystery.</b> Short picks, QA holds, refused labels and abandoned carts land with a supervisor, with the fix spelled out.</span></li>
+          <li><span><b>Nothing is lost in transit.</b> Updates to clients and carriers are queued and retried until they are delivered.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Made for the floor</span>
+        <h2>Fast on a scanner, clear on a desk.</h2>
+      </div>
+      <div class="specs">
+        <div class="spec"><h3>Any device</h3><p>One app on iPhone, Android and the web. Big targets for gloved hands, dense tables for the office.</p></div>
+        <div class="spec"><h3>English and Spanish</h3><p>Each person picks their language. Labels, prompts and errors all follow it.</p></div>
+        <div class="spec"><h3>Light and dark</h3><p>Readable under dock lights and on a dim night shift.</p></div>
+        <div class="spec"><h3>Supervisor view</h3><p>Today's work, exceptions and carrier performance in one place, with counts that link to the orders behind them.</p></div>
+        <div class="spec"><h3>Open by design</h3><p>A documented REST API, CSV import for items and orders, and webhooks for everything a client cares about.</p></div>
+        <div class="spec"><h3>Built to be checked</h3><p>Health and integrity metrics come built in, so you know about a problem before a customer does.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="access" id="access">
+    <div class="wrap">
+      <div class="band-copy">
+        <span class="eyebrow">Early access</span>
+        <h2>Run your next peak on Ambient OS.</h2>
+        <p class="lede">Ambient OS is in private early access. Tell us what you run, whether a lab, a plant or a warehouse, how many orders you ship a day and which carriers you use, and we'll set up a walkthrough on your own data.</p>
+      </div>
+      <div class="contact">
+        <span class="eyebrow">Write to</span>
+        <div class="addr">
+          <code id="email">hello@ambientos.dev</code>
+          <button class="btn ghost small" type="button" id="copy">Copy</button>
+          <span class="copied" id="copied" hidden>Copied</span>
+        </div>
+        <p class="muted">Include the kind of site, your daily order volume and your carriers.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Ambient OS · by AppliedSymbolics, a Reasoning Machines LLC company</span>
+    <span>Ships with <a href="https://opencarrier.dev" target="_blank" rel="noopener">OpenCarrier</a>, our carrier gateway</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copy').addEventListener('click', function () {
+    var text = document.getElementById('email').textContent;
+    var done = document.getElementById('copied');
+    function show() { done.hidden = false; setTimeout(function () { done.hidden = true; }, 2000); }
+    function select() { var r = document.createRange(); r.selectNodeContents(document.getElementById('email')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    try {
+      navigator.clipboard.writeText(text).then(show, select);
+    } catch (e) { select(); }
+  });
+</script>
+</body>
+</html>
