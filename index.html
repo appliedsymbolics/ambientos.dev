@@ -331,9 +331,9 @@ value {"minDaysLeft": 180}</pre>
                 <tr><td>Party screening</td><td class="wrapcell">Order screening</td></tr>
                 <tr><td>Event delivery</td><td class="wrapcell">Client webhooks</td></tr>
                 <tr><td>Notification</td><td class="wrapcell">Expiry notices</td></tr>
-                <tr><td>Device reading</td><td class="wrapcell">Scales and dimensioners, on the roadmap</td></tr>
-                <tr><td>Document rendering</td><td class="wrapcell">Packing lists and other documents, on the roadmap</td></tr>
-                <tr><td>ERP sync</td><td class="wrapcell">Available to connect</td></tr>
+                <tr><td>Device reading</td><td class="wrapcell">Scale and dimensioner readings</td></tr>
+                <tr><td>Document rendering</td><td class="wrapcell">Packing lists</td></tr>
+                <tr><td>ERP sync</td><td class="wrapcell">No built-in use yet; open to a connector</td></tr>
               </tbody>
             </table>
           </div>
@@ -402,6 +402,38 @@ value {"minDaysLeft": 180}</pre>
         </ul>
       </div>
 
+      <div class="band" id="rules">
+        <div class="band-copy">
+          <span class="eyebrow">Floor rules</span>
+          <h2>Each rule on the floor is a setting, not a code change.</h2>
+          <p class="muted">Inspection depth, carts, counts and storage follow your rules for each client, order class or item, and every default keeps working until you change it.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>Scans that fill the form.</b> Composite GS1 scans enter the item, lot and expiry at once, and lots get their own identity labels.</span></li>
+          <li><span><b>Readings, not typing.</b> Scales and dimensioners feed item measurements, accepted only when repeat readings agree.</span></li>
+          <li><span><b>Inspection by order class.</b> Check every unit or a sample of items, and choose whether an order may ship partial.</span></li>
+          <li><span><b>Carts that fit the work.</b> Keep order classes on separate carts, walk bins in your sequence, and skip a short bin to revisit it at the end.</span></li>
+          <li><span><b>Storage that matches the stock.</b> Chilled or hazmat items go only into bins that hold their class, and put-away suggests only those bins.</span></li>
+          <li><span><b>Faces that stay full.</b> Replenish on free units so a face refills before its picks empty it, and see which items earn a pick face.</span></li>
+          <li><span><b>Counts on a schedule.</b> Count programs list the bins that are overdue, oldest first.</span></li>
+          <li><span><b>A record of every handoff.</b> Custody events, customer pickup, and a flag that says whether an order shipped complete.</span></li>
+          <li><span><b>A 3PL starting point.</b> An opt-in preset creates order classes and rules for a 3PL, and never changes the ones you already set.</span></li>
+        </ul>
+      </div>
+
+      <div class="band" id="clients-feeds">
+        <div class="band-copy">
+          <span class="eyebrow">Client systems</span>
+          <h2>Clients see their stock, their receipts and their returns.</h2>
+          <p class="muted">A client's API key reaches only that client's data, so its ERP or storefront stays in step without a person in the middle.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>An availability feed.</b> On hand, allocated, held and available for each SKU.</span></li>
+          <li><span><b>P/O close-out details.</b> Closing a P/O sends expected, received, damaged, short and over units for every line.</span></li>
+          <li><span><b>Returns by your rules.</b> Open a return to sender from the carrier's scan or at the dock, and decide whether clients can authorize returns.</span></li>
+        </ul>
+      </div>
+
       <div class="band" id="proof">
         <div class="band-copy">
           <span class="eyebrow">Accuracy</span>
@@ -443,11 +475,10 @@ value {"minDaysLeft": 180}</pre>
         <p class="lede">This work is planned, not available yet. It builds on the same two layers, as new decision points and new uses of the ports.</p>
       </div>
       <ul class="roadmap">
-        <li><span class="tag next">In progress</span><h3>Identity labels and devices</h3><p>GS1 identity labels and parsing of composite scans. Readings from scales and dimensioners, and documents such as packing lists.</p></li>
-        <li><span class="tag later">Planned</span><h3>Inspection and fulfillment policy</h3><p>Inspection plans and failure routing, partial fulfillment, a shortage policy, and batching.</p></li>
-        <li><span class="tag later">Planned</span><h3>Custody and carrier capabilities</h3><p>Custody events, and richer carrier capabilities: service area, handling, price basis, measured outcomes and freight.</p></li>
-        <li><span class="tag later">Planned</span><h3>Storage, counts and feeds</h3><p>Storage classes, replenishment triggers, count programs, and scheduled notifications and feeds.</p></li>
-        <li><span class="tag later">Planned</span><h3>A 3PL preset</h3><p>A ready set of order classes, rule values and station flows for a 3PL to start from.</p></li>
+        <li><span class="tag later">Planned</span><h3>Freight</h3><p>LTL and FTL handoff through the carrier port, once freight carriers are connected.</p></li>
+        <li><span class="tag later">Planned</span><h3>Scheduled reports</h3><p>Expiry notices and other reports sent on a schedule through the notification port. Today a supervisor sends them on demand.</p></li>
+        <li><span class="tag later">Planned</span><h3>Billing choices</h3><p>Carrier choice by billed price or margin, and labels billed to a recipient or a client's own carrier account.</p></li>
+        <li><span class="tag later">Planned</span><h3>Station flows for a 3PL</h3><p>Pack station screens by order class, and the rule values a site still has to settle, on top of today's 3PL preset.</p></li>
       </ul>
     </div>
   </section>
