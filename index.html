@@ -159,6 +159,21 @@ tr:last-child td { border-bottom: 0; }
 .copied { font: 500 0.78rem/1 var(--mono); color: var(--ok); }
 @media (max-width: 860px) { .access .wrap { grid-template-columns: 1fr; } }
 
+/* Policy rule card: a rule as an admin writes it */
+.rule { margin: 0; padding: 16px 18px; border-bottom: 1px solid var(--line); font: 400 0.8rem/1.6 var(--mono); color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; }
+.rule b { color: var(--ink); font-weight: 700; }
+td.wrapcell { white-space: normal; min-width: 14rem; }
+
+/* Roadmap: planned work, kept visibly apart from what ships today */
+.roadmap { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.roadmap li { border: 1px dashed var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.roadmap .tag { justify-self: start; }
+.roadmap .tag.next { background: transparent; border: 1px solid var(--accent); }
+.roadmap .tag.later { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
+.roadmap p { font-size: 0.93rem; color: var(--ink-2); }
+@media (max-width: 900px) { .roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .roadmap { grid-template-columns: 1fr; } }
+
 footer { border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px; font: 400 0.8rem/1.5 var(--mono); color: var(--ink-3); }
 footer a { color: var(--ink-2); }
@@ -172,8 +187,9 @@ footer a { color: var(--ink-2); }
     <nav class="links" aria-label="Sections">
       <a href="#where">Where it runs</a>
       <a href="#floor">The floor</a>
-            <a href="#shipping">Shipping</a>
-      <a href="#proof">Accuracy</a>
+      <a href="#platform">Platform</a>
+      <a href="#shipping">Shipping</a>
+      <a href="#roadmap">Roadmap</a>
       <a class="btn primary small" href="#access">Request early access</a>
     </nav>
   </div>
@@ -185,7 +201,7 @@ footer a { color: var(--ink-2); }
       <div class="hero-copy">
         <span class="eyebrow">Inventory · orders · floor work</span>
         <h1>Every unit, every move, one system.</h1>
-        <p class="lede">Ambient OS manages your orders and directs the work in the building, whether that is a lab stockroom, a factory floor or a warehouse. From the receiving dock to the carrier label, it records every unit's history as it happens, so your stock count is something you can prove.</p>
+        <p class="lede">Ambient OS manages your orders and directs the work in the building, whether that is a lab stockroom, a factory floor or a warehouse. From the receiving dock to the carrier label, it records every unit's history as it happens, so your stock count is something you can prove. Your own rules and your own outside systems plug in per site and per client, without a release.</p>
         <div class="cta-row">
           <a class="btn primary" href="#access">Request early access</a>
           <a class="btn ghost" href="#floor">See how it works</a>
@@ -200,15 +216,16 @@ footer a { color: var(--ink-2); }
         </div>
         <ol>
           <li><time>09:12</time><span class="ev">received</span><span class="detail">PO-1042 line 3 · expiry 2027-04-30</span></li>
-          <li style="animation-delay:.05s"><time>09:20</time><span class="ev">put away</span><span class="detail">bin A-04-02 (overstock)</span></li>
+          <li style="animation-delay:.05s"><time>09:20</time><span class="ev">put away</span><span class="detail">bin A-04-02 · zone rule</span></li>
           <li style="animation-delay:.1s"><time>11:47</time><span class="ev">replenished</span><span class="detail">A-04-02 → pick face P-12-01</span></li>
-          <li style="animation-delay:.15s"><time>13:05</time><span class="ev">reserved</span><span class="detail">order 58213 · FIFO by receipt</span></li>
-          <li style="animation-delay:.2s"><time>13:41</time><span class="ev">picked</span><span class="detail">cart C-07 · bin, item, qty scanned</span></li>
-          <li style="animation-delay:.25s"><time>13:52</time><span class="ev ok">qa passed</span><span class="detail">1.42 lb · 12 × 9 × 2 in</span></li>
-          <li style="animation-delay:.3s"><time>13:55</time><span class="ev">labeled</span><span class="detail">FedEx 2Day · $11.92 · best of 4 quotes</span></li>
-          <li style="animation-delay:.35s"><time>14:30</time><span class="ev ok">shipped</span><span class="detail">tracking 7949 5353 5000</span></li>
+          <li style="animation-delay:.15s"><time>12:58</time><span class="ev ok">screened</span><span class="detail">address, party, carrier ✓</span></li>
+          <li style="animation-delay:.2s"><time>13:05</time><span class="ev">reserved</span><span class="detail">order 58213 · FIFO · 180+ days left</span></li>
+          <li style="animation-delay:.25s"><time>13:41</time><span class="ev">picked</span><span class="detail">cart C-07 · bin, item, qty scanned</span></li>
+          <li style="animation-delay:.3s"><time>13:52</time><span class="ev ok">qa passed</span><span class="detail">1.42 lb · 12 × 9 × 2 in</span></li>
+          <li style="animation-delay:.35s"><time>13:55</time><span class="ev">labeled</span><span class="detail">FedEx 2Day · $11.92 · best of 4 quotes</span></li>
+          <li style="animation-delay:.4s"><time>14:30</time><span class="ev ok">shipped</span><span class="detail">tracking 7949 5353 5000</span></li>
         </ol>
-        <div class="ledger-foot"><span>8 events · 0 gaps</span><span>on hand = received − shipped ✓</span></div>
+        <div class="ledger-foot"><span>9 events · 0 gaps</span><span>on hand = received − shipped ✓</span></div>
       </figure>
     </div>
   </div>
@@ -221,9 +238,9 @@ footer a { color: var(--ink-2); }
         <p class="lede">The rules of good inventory are the same in a lab, a plant and a warehouse: know what came in, where it is, what it was used for and where it went. Ambient applies them the same way in each.</p>
       </div>
       <div class="specs">
-        <div class="spec"><h3>Labs</h3><p>Reagents and consumables received by lot with their expiry dates, used first in, first out, and serial-tracked items with their own IDs. Every unit's history is on record for an audit.</p></div>
-        <div class="spec"><h3>Factories</h3><p>Materials received against purchase orders with over, short and damaged outcomes. Finished goods are checked by weight and dimensions before they ship, and traced by lot or serial after.</p></div>
-        <div class="spec"><h3>Warehouses &amp; 3PLs</h3><p>Many clients in one building, multi-order carts and rapid pick, and labels bought from the carrier that fits each box.</p></div>
+        <div class="spec"><h3>Labs</h3><p>Reagents and consumables received by lot with their expiry dates, used first in, first out, and serial-tracked items with their own IDs. A report shows which lots expire soon, and stock pending review stays on hold until a supervisor releases it. Every unit's history is on record for an audit.</p></div>
+        <div class="spec"><h3>Factories</h3><p>Materials received against purchase orders with over, short and damaged outcomes, and held for QC without leaving the bin. Orders go to the floor when you release them. Finished goods are checked by weight and dimensions before they ship, and traced by lot or serial after.</p></div>
+        <div class="spec"><h3>Warehouses &amp; 3PLs</h3><p>Many clients in one building, each with its own rules, carrier accounts and webhooks. Multi-order carts and rapid pick, and labels bought from the carrier that fits each box.</p></div>
       </div>
     </div>
   </section>
@@ -236,15 +253,92 @@ footer a { color: var(--ink-2); }
         <p class="lede">Operators work from phones, tablets or a desk. Each step asks for a scan of the bin, the item and the quantity, so mistakes stop at the shelf instead of at the customer.</p>
       </div>
       <ol class="flow">
-        <li><h3>Receive</h3><p>Against a purchase order, with over, short and damaged outcomes. Lots, expiry dates and serial numbers are captured where the item needs them.</p></li>
-        <li><h3>Put away</h3><p>Into the bin you choose, recorded by scan. Overstock and pick faces are tracked separately.</p></li>
-        <li><h3>Replenish</h3><p>Each pick face has a minimum and maximum. When it runs low, Ambient creates a move from overstock.</p></li>
-        <li><h3>Allocate</h3><p>Orders reserve stock first in, first out by receipt date, and a backorder retries when stock arrives.</p></li>
+        <li><h3>Receive</h3><p>Against a purchase order, with over, short and damaged outcomes. One line can arrive in several lots in one step, an item nobody has registered yet can still come in, and stock can be held on arrival until questions are answered.</p></li>
+        <li><h3>Put away</h3><p>Ambient suggests bins: the pick face while it has room, then the zones your rule prefers. The move is recorded by scan, and pick faces refill from overstock at their minimum.</p></li>
+        <li><h3>Screen &amp; release</h3><p>Each new order is checked against your rules, the address, restricted-party lists and whether any carrier can take it. Then it goes to the floor at once, or when a supervisor releases it.</p></li>
+        <li><h3>Allocate</h3><p>Orders reserve stock first in, first out by receipt date, skipping held stock and lots too close to expiry. A backorder retries when stock arrives or a hold is released.</p></li>
         <li><h3>Pick</h3><p>Several orders at once on a cart, or one order straight into its shipping box with rapid pick.</p></li>
         <li><h3>QA</h3><p>A count or scan, plus weight and dimensions against what the order should weigh. A failure goes to a supervisor.</p></li>
         <li><h3>Pack &amp; label</h3><p>Ambient cubes the order, splits it into shipments if needed, and buys the label from the best carrier.</p></li>
         <li><h3>Ship &amp; return</h3><p>Tracking appears on the order. Returns come back into quarantine, then are restocked or written off.</p></li>
       </ol>
+    </div>
+  </section>
+
+  <section id="platform">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Platform</span>
+        <h2>Your rules and your systems, set per site and per client.</h2>
+        <p class="lede">A lab, a plant and a 3PL make the same decisions with different values. Ambient keeps those values in a policy layer and the outside systems that do the work in an integrations layer, so each site configures them without a code change or a redeploy.</p>
+      </div>
+
+      <div class="band">
+        <div class="band-copy">
+          <span class="eyebrow">Policy layer</span>
+          <h2>Change how Ambient decides without waiting for a release.</h2>
+          <p class="muted">Ambient makes its choices at named decision points. Each point has a default that matches how Ambient behaved before, so nothing changes until you write a rule.</p>
+          <ul class="checks">
+            <li><span><b>Scoped rules.</b> A rule applies to the whole site, one client, one order class or one item, and the most specific one wins.</span></li>
+            <li><span><b>Conditions you can read.</b> A rule may carry a condition written in CEL, a small, sandboxed expression language, over facts about the order, the item and the client. It is type-checked when you save it.</span></li>
+            <li><span><b>Try before you trust.</b> A test run evaluates a point for a real order, with a draft rule if you like, and writes nothing.</span></li>
+            <li><span><b>Every version kept.</b> Each change is a new version, and a withdrawn rule keeps its history. Decisions that change an order are recorded with the rule and version behind them.</span></li>
+          </ul>
+        </div>
+        <figure class="panel" aria-label="Decision points available today">
+          <div class="panel-title"><span>Decision points</span><span class="tag">Example rule</span></div>
+          <pre class="rule"><b>stock.remaining_life</b> · client C-12
+when  order.class == "b2b"
+value {"minDaysLeft": 180}</pre>
+          <div class="scroll">
+            <table>
+              <thead><tr><th>Point</th><th>Decides</th></tr></thead>
+              <tbody>
+                <tr><td>Order class</td><td class="wrapcell">Which class a new order belongs to, from the request or a rule</td></tr>
+                <tr><td>Remaining shelf life</td><td class="wrapcell">How many days before expiry a lot must have to be reserved</td></tr>
+                <tr><td>Admission</td><td class="wrapcell">Reject, hold or flag an order when it arrives</td></tr>
+                <tr><td>Release</td><td class="wrapcell">Send a validated order to the floor at once, or wait for a supervisor</td></tr>
+                <tr><td>Commitment</td><td class="wrapcell">When an order can no longer be canceled: at release, first pick or handoff</td></tr>
+                <tr><td>Item requirements</td><td class="wrapcell">Which attributes an item needs: weight, dimensions, barcode, compliance class</td></tr>
+                <tr><td>Put-away zones</td><td class="wrapcell">Where received stock should go, most preferred zone first</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+      </div>
+
+      <div class="band">
+        <div class="band-copy">
+          <span class="eyebrow">Integrations layer</span>
+          <h2>Plug in the outside systems each site and client already uses.</h2>
+          <p class="muted">Ambient names the jobs it needs done outside as ports. You choose the connection that serves each port, for the whole site or for one client, and a client's own connection wins over the site's.</p>
+          <ul class="checks">
+            <li><span><b>Any system, any language.</b> A remote connector is your HTTPS endpoint answering signed JSON requests, so an in-house system can serve a port without a plug-in.</span></li>
+            <li><span><b>Secrets stay sealed.</b> Credentials are write-only and encrypted before they are stored, so no record or event holds them in clear.</span></li>
+            <li><span><b>You decide what an outage means.</b> Each connection says whether a failed call blocks, holds or skips, and has its own timeout.</span></li>
+            <li><span><b>A call log for every connection.</b> Each call, health check and test call is logged with its outcome and timing, without its payload.</span></li>
+            <li><span><b>Carriers and webhooks per client.</b> A client with its own carrier accounts buys labels through its own gateway connection, and webhook delivery is configured the same way. Changes apply within seconds, without a restart.</span></li>
+          </ul>
+        </div>
+        <figure class="panel" aria-label="Ports a connection can serve">
+          <div class="panel-title"><span>Ports</span><span class="tag">8 ports</span></div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th>Port</th><th>Used today by</th></tr></thead>
+              <tbody>
+                <tr><td>Carrier handoff</td><td class="wrapcell">Labels, tracking and carrier feasibility</td></tr>
+                <tr><td>Address validation</td><td class="wrapcell">Order screening</td></tr>
+                <tr><td>Party screening</td><td class="wrapcell">Order screening</td></tr>
+                <tr><td>Event delivery</td><td class="wrapcell">Client webhooks</td></tr>
+                <tr><td>Notification</td><td class="wrapcell">Expiry notices</td></tr>
+                <tr><td>Device reading</td><td class="wrapcell">Scale and dimensioner readings</td></tr>
+                <tr><td>Document rendering</td><td class="wrapcell">Packing lists</td></tr>
+                <tr><td>ERP sync</td><td class="wrapcell">No built-in use yet; open to a connector</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -257,9 +351,10 @@ footer a { color: var(--ink-2); }
           <p class="muted">Every item, order and return belongs to a client. Two clients can use the same SKU without colliding, and a scan only matches items of the client whose work is in hand.</p>
         </div>
         <ul class="checks">
-          <li><span><b>Order intake per client.</b> Each client gets its own API key to send orders, or you import them from CSV.</span></li>
-          <li><span><b>Clients hear about their orders.</b> Signed webhooks report status changes, tracking updates and alerts to each client's systems.</span></li>
-          <li><span><b>Rules that follow the client.</b> Signature requirements by product, client and state law, and a packing allowance set per client.</span></li>
+          <li><span><b>Order intake per client.</b> Each client gets its own API key to send orders, or you import them from CSV. A client can cancel its own orders by API until the commitment point you set.</span></li>
+          <li><span><b>Clients hear about their orders.</b> Signed webhooks report status changes, tracking updates and alerts to each client's systems, with the reason when an order is held or rejected.</span></li>
+          <li><span><b>Rules that follow the client.</b> Signature requirements by product, client and state law, a packing allowance, and any policy rule scoped to the client.</span></li>
+          <li><span><b>New products before their catalog data.</b> A P/O can name an item that is not registered yet. It is received as provisional and held until an admin completes the attributes your rule requires.</span></li>
           <li><span><b>Returns with a paper trail.</b> Return authorizations come in through receiving, and every unit lands in quarantine before it can be sold again.</span></li>
         </ul>
       </div>
@@ -271,6 +366,8 @@ footer a { color: var(--ink-2); }
           <p class="muted">After packing, Ambient asks your carrier accounts for quotes. It weighs price, the service level the order needs, each carrier's on-time record and the cost of a signature, then buys the label and prints it. If the carrier connection is down, the packer ships by hand and nothing waits.</p>
           <ul class="checks">
             <li><span><b>Real carriers, your accounts.</b> UPS and FedEx labels on your own negotiated rates. Automatic choice compares FedEx services today, and UPS joins it next.</span></li>
+            <li><span><b>Feasibility checked at intake.</b> When an order arrives, Ambient asks whether any carrier can take it. If none can, the order is held with the reason before anyone picks it. If the gateway is down, no order is held for it.</span></li>
+            <li><span><b>A client's own carrier accounts.</b> A client can bring its own gateway connection, and each label remembers the connection that bought it.</span></li>
             <li><span><b>Carrier performance you can see.</b> On-time rate, days late, and settled against quoted cost for each carrier and service.</span></li>
             <li><span><b>Invoices reconciled.</b> Upload the carrier's invoice and see what each label really cost.</span></li>
           </ul>
@@ -290,6 +387,51 @@ footer a { color: var(--ink-2); }
             </table>
           </div>
         </figure>
+      </div>
+
+      <div class="band" id="holds">
+        <div class="band-copy">
+          <span class="eyebrow">Stock control</span>
+          <h2>Keep stock on the books and out of orders until it is cleared.</h2>
+          <p class="muted">A hold names an item, and optionally a lot and a bin, with a reason. Held stock stays on hand and counted, but no order can reserve it and replenishment will not move it.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>A parking lot at receipt.</b> Stock that arrives before its questions are answered is held where it lands, in the same step as the receipt.</span></li>
+          <li><span><b>Release or dispose, with evidence.</b> A supervisor releases the stock, which wakes waiting backorders, or marks it for disposal and confirms with a certificate or manifest reference and an optional witness.</span></li>
+          <li><span><b>Expiring lots, before they expire.</b> A report lists the lots that expire within a window you pick, soonest first, and a supervisor can send the client an expiry notice by webhook, and through its notification connection when it has one.</span></li>
+        </ul>
+      </div>
+
+      <div class="band" id="rules">
+        <div class="band-copy">
+          <span class="eyebrow">Floor rules</span>
+          <h2>Each rule on the floor is a setting, not a code change.</h2>
+          <p class="muted">Inspection depth, carts, counts and storage follow your rules for each client, order class or item, and every default keeps working until you change it.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>Scans that fill the form.</b> Composite GS1 scans enter the item, lot and expiry at once, and lots get their own identity labels.</span></li>
+          <li><span><b>Readings, not typing.</b> Scales and dimensioners feed item measurements, accepted only when repeat readings agree.</span></li>
+          <li><span><b>Inspection by order class.</b> Check every unit or a sample of items, and choose whether an order may ship partial.</span></li>
+          <li><span><b>Carts that fit the work.</b> Keep order classes on separate carts, walk bins in your sequence, and skip a short bin to revisit it at the end.</span></li>
+          <li><span><b>Storage that matches the stock.</b> Chilled or hazmat items go only into bins that hold their class, and put-away suggests only those bins.</span></li>
+          <li><span><b>Faces that stay full.</b> Replenish on free units so a face refills before its picks empty it, and see which items earn a pick face.</span></li>
+          <li><span><b>Counts on a schedule.</b> Count programs list the bins that are overdue, oldest first.</span></li>
+          <li><span><b>A record of every handoff.</b> Custody events, customer pickup, and a flag that says whether an order shipped complete.</span></li>
+          <li><span><b>A 3PL starting point.</b> An opt-in preset creates order classes and rules for a 3PL, and never changes the ones you already set.</span></li>
+        </ul>
+      </div>
+
+      <div class="band" id="clients-feeds">
+        <div class="band-copy">
+          <span class="eyebrow">Client systems</span>
+          <h2>Clients see their stock, their receipts and their returns.</h2>
+          <p class="muted">A client's API key reaches only that client's data, so its ERP or storefront stays in step without a person in the middle.</p>
+        </div>
+        <ul class="checks">
+          <li><span><b>An availability feed.</b> On hand, allocated, held and available for each SKU.</span></li>
+          <li><span><b>P/O close-out details.</b> Closing a P/O sends expected, received, damaged, short and over units for every line.</span></li>
+          <li><span><b>Returns by your rules.</b> Open a return to sender from the carrier's scan or at the dock, and decide whether clients can authorize returns.</span></li>
+        </ul>
       </div>
 
       <div class="band" id="proof">
@@ -319,9 +461,25 @@ footer a { color: var(--ink-2); }
         <div class="spec"><h3>English and Spanish</h3><p>Each person picks their language. Labels, prompts and errors all follow it.</p></div>
         <div class="spec"><h3>Light and dark</h3><p>Readable under dock lights and on a dim night shift.</p></div>
         <div class="spec"><h3>Supervisor view</h3><p>Today's work, exceptions and carrier performance in one place, with counts that link to the orders behind them.</p></div>
-        <div class="spec"><h3>Open by design</h3><p>A documented REST API, CSV import for items and orders, and webhooks for everything a client cares about.</p></div>
+        <div class="spec"><h3>Open by design</h3><p>A documented REST API, CSV import for items and orders, webhooks for everything a client cares about, and ports any system can serve.</p></div>
         <div class="spec"><h3>Built to be checked</h3><p>Health and integrity metrics come built in, so you know about a problem before a customer does.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Roadmap</span>
+        <h2>What comes next.</h2>
+        <p class="lede">This work is planned, not available yet. It builds on the same two layers, as new decision points and new uses of the ports.</p>
+      </div>
+      <ul class="roadmap">
+        <li><span class="tag later">Planned</span><h3>Freight</h3><p>LTL and FTL handoff through the carrier port, once freight carriers are connected.</p></li>
+        <li><span class="tag later">Planned</span><h3>Scheduled reports</h3><p>Expiry notices and other reports sent on a schedule through the notification port. Today a supervisor sends them on demand.</p></li>
+        <li><span class="tag later">Planned</span><h3>Billing choices</h3><p>Carrier choice by billed price or margin, and labels billed to a recipient or a client's own carrier account.</p></li>
+        <li><span class="tag later">Planned</span><h3>Station flows for a 3PL</h3><p>Pack station screens by order class, and the rule values a site still has to settle, on top of today's 3PL preset.</p></li>
+      </ul>
     </div>
   </section>
 
