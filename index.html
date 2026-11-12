@@ -9,7 +9,11 @@
 <meta property="og:url" content="https://ambientos.dev/">
 <meta property="og:title" content="Ambient OS">
 <meta property="og:description" content="Ambient OS runs inventory, orders and floor work for labs, factories and warehouses, with a provable history of every unit.">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://ambientos.dev/screens/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="An order in Ambient OS: each stage checked from pending to shipped, with its lines and reservations">
+<meta name="twitter:card" content="summary_large_image">
 <title>Ambient OS</title>
 <meta name="description" content="Ambient OS runs inventory, orders and floor work for labs, factories and warehouses, with a provable history of every unit.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -174,6 +178,18 @@ td.wrapcell { white-space: normal; min-width: 14rem; }
 @media (max-width: 900px) { .roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .roadmap { grid-template-columns: 1fr; } }
 
+/* Product screens: real captures, framed like an app window */
+.shot { margin: 0; display: grid; gap: 12px; min-width: 0; }
+.shot .frame { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: 0 24px 60px -30px rgb(17 24 39 / 0.4); }
+.shot .bar { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.shot .bar i { width: 9px; height: 9px; border-radius: 50%; background: var(--line); }
+.shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; }
+.shot figcaption { display: grid; gap: 4px; font-size: 0.93rem; color: var(--ink-2); }
+.shot figcaption b { font: 700 0.95rem/1.35 var(--mono); color: var(--ink); }
+.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; margin-top: 48px; }
+.shots-note { margin-top: 36px; font: 500 0.78rem/1.5 var(--mono); color: var(--ink-3); }
+@media (max-width: 760px) { .shots { grid-template-columns: 1fr; } }
+
 footer { border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding-block: 28px; font: 400 0.8rem/1.5 var(--mono); color: var(--ink-3); }
 footer a { color: var(--ink-2); }
@@ -192,6 +208,7 @@ footer a { color: var(--ink-2); }
   <div class="wrap">
     <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>ambient os</a>
     <nav class="links" aria-label="Sections">
+      <a href="#product">Product</a>
       <a href="#where">Where it runs</a>
       <a href="#floor">The floor</a>
       <a href="#platform">Platform</a>
@@ -236,6 +253,64 @@ footer a { color: var(--ink-2); }
       </figure>
     </div>
   </div>
+
+  <section id="product">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">The product</span>
+        <h2>One app for the office and the floor.</h2>
+        <p class="lede">These are real Ambient OS screens. Operators pick, pack and receive from a scanner, supervisors clear exceptions, and every order keeps its whole history in view.</p>
+      </div>
+      <figure class="shot">
+          <div class="frame"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <picture>
+              <source srcset="screens/order-dark.webp" media="(prefers-color-scheme: dark)">
+              <img src="screens/order-light.webp" width="2000" height="1250" alt="An order's detail screen: a shipped order with each stage checked from pending to shipped, its lines, the stock reserved for them, the ship-to address and the shipping service" decoding="async">
+            </picture>
+          </div>
+          <figcaption><b>Every order, start to finish</b><span>Each stage from intake to shipped, with the lines, the stock reserved for them and the tasks behind each step. Packing lists and shipping labels print from here.</span></figcaption>
+        </figure>
+      <div class="shots">
+        <figure class="shot">
+          <div class="frame"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <picture>
+              <source srcset="screens/pick-dark.webp" media="(prefers-color-scheme: dark)">
+              <img src="screens/pick-light.webp" width="2000" height="1250" alt="The Work screen's batch pick tab: open pick orders, the number of orders on the cart, an optional zone and a field to scan the first tote" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption><b>Batch picking</b><span>Put several orders on one cart and scan a tote for each, or rapid-pick one order straight into its box.</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="frame"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <picture>
+              <source srcset="screens/inventory-dark.webp" media="(prefers-color-scheme: dark)">
+              <img src="screens/inventory-light.webp" width="2000" height="1250" alt="The Inventory screen: items with SKU, name and barcode, and their on-hand, allocated, available and on-hold quantities" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption><b>Inventory you can look up</b><span>Search by SKU, name or barcode and see on-hand, allocated, available and held stock, with locations and the journal one tab away.</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="frame"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <picture>
+              <source srcset="screens/exceptions-dark.webp" media="(prefers-color-scheme: dark)">
+              <img src="screens/exceptions-light.webp" width="2000" height="1250" alt="The Supervisor screen's exceptions tab: orders that could not replace short-picked units, each with a reason field and buttons to wait for stock, cancel the short lines or cancel the order" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption><b>Exceptions with the fix spelled out</b><span>Short picks, QA failures and refused labels land with a supervisor, with the choices that resolve them.</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <div class="frame"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <picture>
+              <source srcset="screens/returns-dark.webp" media="(prefers-color-scheme: dark)">
+              <img src="screens/returns-light.webp" width="2000" height="1250" alt="The Returns screen: a dock receipt field to scan a return, order or tracking number, and a list of open returns with their reasons and quantities" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption><b>Returns at the dock</b><span>Scan a return, its order or the tracking number it shipped with. Units go to quarantine, then back to stock or written off.</span></figcaption>
+        </figure>
+      </div>
+      <p class="shots-note">Shown with synthetic demo data. Every screen is available in light and dark, on the web, iPhone and Android.</p>
+    </div>
+  </section>
 
   <section id="where">
     <div class="wrap">
